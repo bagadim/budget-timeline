@@ -1,0 +1,21 @@
+# deps
+node_modules/
+
+# build artifacts
+dist/
+.next/
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env.*.local
+
+# data
+data/
+*.db
+*.db-journal
+
+# misc
+.DS_Store
+*.log
