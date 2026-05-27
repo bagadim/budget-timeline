@@ -1,0 +1,20 @@
+{
+  "name": "@budget-timeline/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js"
+  },
+  "dependencies": {
+    "@budget-timeline/core": "workspace:*",
+    "@budget-timeline/db": "workspace:*",
+    "@orpc/server": "latest",
+    "fastify": "^5.0.0"
+  },
+  "devDependencies": {
+    "tsx": "^4.0.0"
+  }
+}
