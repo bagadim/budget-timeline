@@ -1,6 +1,6 @@
+import { db, milestones } from '@budget-timeline/db';
 import { os } from '@orpc/server';
 import { z } from 'zod';
-import { db, milestones } from '@budget-timeline/db';
 
 const list = os.handler(async () => {
   return db.select().from(milestones).all();

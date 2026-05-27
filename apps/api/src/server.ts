@@ -1,6 +1,6 @@
-import Fastify from 'fastify';
-import { RPCHandler } from '@orpc/server/fastify';
 import { router } from '@budget-timeline/core';
+import { RPCHandler } from '@orpc/server/fastify';
+import Fastify from 'fastify';
 
 const rpcHandler = new RPCHandler(router);
 const fastify = Fastify({ logger: true });

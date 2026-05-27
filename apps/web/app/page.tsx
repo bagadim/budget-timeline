@@ -1,5 +1,5 @@
-import { client } from '@/lib/orpc';
 import { centsToDisplay } from '@budget-timeline/shared/money';
+import { client } from '@/lib/orpc';
 import { NewMilestoneForm } from './new-milestone-form';
 
 export default async function Page() {
