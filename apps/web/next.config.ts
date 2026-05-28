@@ -5,7 +5,7 @@ const config: NextConfig = {
     return [
       {
         source: '/rpc/:path*',
-        destination: 'http://localhost:3001/rpc/:path*',
+        destination: 'http://localhost:4001/rpc/:path*',
       },
     ];
   },

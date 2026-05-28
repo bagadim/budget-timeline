@@ -26,7 +26,7 @@ nvm use                  # Node 22
 pnpm install
 pnpm db:generate         # produce migration SQL from schema diff
 pnpm db:migrate          # apply migrations to data/budget.db
-pnpm dev                 # web on :3000, api on :3001 (proxied via Next /rpc/*)
+pnpm dev                 # web on :4000, api on :4001 (proxied via Next /rpc/*)
 pnpm test                # vitest across workspaces
 pnpm lint                # biome
 ```

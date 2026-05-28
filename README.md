@@ -16,8 +16,8 @@ pnpm db:migrate
 pnpm dev
 ```
 
-Web: <http://localhost:3000>
-API: <http://localhost:3001> (proxied via Next at `/rpc/*`)
+Web: <http://localhost:4000>
+API: <http://localhost:4001> (proxied via Next at `/rpc/*`)
 
 ## Layout
 

@@ -14,5 +14,5 @@ fastify.all('/rpc/*', async (req, reply) => {
   }
 });
 
-const port = Number(process.env.PORT ?? 3001);
+const port = Number(process.env.PORT ?? 4001);
 await fastify.listen({ port });
