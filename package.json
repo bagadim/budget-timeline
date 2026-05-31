@@ -9,6 +9,7 @@
   },
   "scripts": {
     "dev": "pnpm -r --parallel dev",
+    "dev-kill": "kill -9 $(lsof -tiTCP:4000,4001 -sTCP:LISTEN) 2>/dev/null || echo 'no dev processes on :4000/:4001'",
     "build": "pnpm -r build",
     "lint": "biome check .",
     "format": "biome format --write .",
