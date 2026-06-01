@@ -52,5 +52,6 @@ See `docs/superpowers/specs/` for design docs (the "why" behind decisions). The 
 
 - Money is stored as integer cents to avoid floating-point issues.
 - Dates are ISO `YYYY-MM-DD` strings (TEXT in SQLite). No native DATE type usage.
-- Currency display defaults to CHF / `de-CH` locale.
+- Currency display defaults to PLN; selectable per budget among PLN/USD/EUR/RUB via `displayMoney(minor, currency)` in `packages/shared/money.js`.
+- Month-granular fields are stored as first-of-month ISO dates (`YYYY-MM-01`).
 - Cross-package imports use the `@budget-timeline/*` scope and `workspace:*` protocol.
