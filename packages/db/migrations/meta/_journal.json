@@ -8,6 +8,13 @@
       "when": 1779892512935,
       "tag": "0000_light_pestilence",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1780322340484,
+      "tag": "0001_fluffy_princess_powerful",
+      "breakpoints": true
     }
   ]
 }
