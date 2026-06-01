@@ -13,7 +13,14 @@ export function YearBoundaries({ months, height }: { months: ProjectionMonth[]; 
       {months.map((m, i) =>
         m.isYearStart ? (
           <g key={m.monthIndex}>
-            <line x1={colX(i) - GAP / 2} y1={0} x2={colX(i) - GAP / 2} y2={height} stroke="#cbd5e1" strokeDasharray="3 3" />
+            <line
+              x1={colX(i) - GAP / 2}
+              y1={0}
+              x2={colX(i) - GAP / 2}
+              y2={height}
+              stroke="#cbd5e1"
+              strokeDasharray="3 3"
+            />
             <text x={colX(i) - GAP / 2 + 3} y={11} fontSize={10} fontWeight={600} fill="#475569">
               {m.year}
             </text>

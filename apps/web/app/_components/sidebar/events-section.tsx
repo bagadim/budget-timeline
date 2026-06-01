@@ -1,7 +1,7 @@
 'use client';
 
-import type { useBudget } from '../use-budget';
 import { nextColor, PALETTE } from '@/lib/palette';
+import type { useBudget } from '../use-budget';
 import { AddLink } from './add-link';
 import { ColorSwatch } from './color-swatch';
 
@@ -14,7 +14,12 @@ export function EventsSection({ budget }: { budget: ReturnType<typeof useBudget>
     persist(
       (cur) => cur,
       async () => {
-        await client.events.create({ name: 'New event', month: snapshot.settings.startMonth, amountMinor: 0, color });
+        await client.events.create({
+          name: 'New event',
+          month: snapshot.settings.startMonth,
+          amountMinor: 0,
+          color,
+        });
         await reload();
       },
     );
@@ -37,8 +42,14 @@ export function EventsSection({ budget }: { budget: ReturnType<typeof useBudget>
       <h2 className="mb-2 font-semibold">Events</h2>
       <div className="space-y-1.5">
         {events.map((e) => (
-          <div key={e.id} className="flex items-center gap-1.5 rounded border border-zinc-200 p-1.5">
-            <ColorSwatch color={e.color ?? PALETTE[0]} onChange={(c) => patch(e.id, { color: c })} />
+          <div
+            key={e.id}
+            className="flex items-center gap-1.5 rounded border border-zinc-200 p-1.5"
+          >
+            <ColorSwatch
+              color={e.color ?? PALETTE[0]}
+              onChange={(c) => patch(e.id, { color: c })}
+            />
             <input
               defaultValue={e.name}
               onBlur={(ev) => patch(e.id, { name: ev.target.value })}
@@ -53,10 +64,16 @@ export function EventsSection({ budget }: { budget: ReturnType<typeof useBudget>
             <input
               type="number"
               defaultValue={e.amountMinor / 100}
-              onBlur={(ev) => patch(e.id, { amountMinor: Math.round(Number(ev.target.value) * 100) })}
+              onBlur={(ev) =>
+                patch(e.id, { amountMinor: Math.round(Number(ev.target.value) * 100) })
+              }
               className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
             />
-            <button type="button" onClick={() => remove(e.id)} className="text-zinc-400 hover:text-red-600">
+            <button
+              type="button"
+              onClick={() => remove(e.id)}
+              className="text-zinc-400 hover:text-red-600"
+            >
               ✕
             </button>
           </div>

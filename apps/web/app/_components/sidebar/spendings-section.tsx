@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import type { useBudget } from '../use-budget';
 import { nextColor, PALETTE } from '@/lib/palette';
+import type { useBudget } from '../use-budget';
 import { AddLink } from './add-link';
 import { ColorSwatch } from './color-swatch';
 import { PeriodRows } from './period-rows';
@@ -17,7 +17,13 @@ export function SpendingsSection({ budget }: { budget: ReturnType<typeof useBudg
     persist(
       (cur) => cur,
       async () => {
-        await client.flows.create({ kind: 'spending', name: 'New spending', color, position: spendings.length, startMonth: snapshot.settings.startMonth });
+        await client.flows.create({
+          kind: 'spending',
+          name: 'New spending',
+          color,
+          position: spendings.length,
+          startMonth: snapshot.settings.startMonth,
+        });
         await reload();
       },
     );
@@ -48,10 +54,18 @@ export function SpendingsSection({ budget }: { budget: ReturnType<typeof useBudg
                 onBlur={(e) => patchFlow(f.id, { name: e.target.value })}
                 className="min-w-0 flex-1 rounded border border-transparent px-1 py-0.5 text-sm text-zinc-900 hover:border-zinc-200"
               />
-              <button type="button" onClick={() => setExpanded(expanded === f.id ? null : f.id)} className="text-zinc-400">
+              <button
+                type="button"
+                onClick={() => setExpanded(expanded === f.id ? null : f.id)}
+                className="text-zinc-400"
+              >
                 {expanded === f.id ? '▾' : '▸'}
               </button>
-              <button type="button" onClick={() => remove(f.id)} className="text-zinc-400 hover:text-red-600">
+              <button
+                type="button"
+                onClick={() => remove(f.id)}
+                className="text-zinc-400 hover:text-red-600"
+              >
                 ✕
               </button>
             </div>

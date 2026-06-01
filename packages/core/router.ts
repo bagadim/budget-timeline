@@ -3,8 +3,8 @@ import { os } from '@orpc/server';
 import { z } from 'zod';
 import * as eventsSvc from './services/events';
 import * as flowsSvc from './services/flows';
-import { getSnapshot } from './services/snapshot';
 import { getSettings, updateSettings } from './services/settings';
+import { getSnapshot } from './services/snapshot';
 import * as taxesSvc from './services/taxes';
 
 const MONTH = z.string().regex(/^\d{4}-\d{2}-01$/);
@@ -31,10 +31,25 @@ const settingsUpdate = os
 
 // --- flows ---
 const flowsCreate = os
-  .input(z.object({ kind: KIND, name: z.string().min(1), color: z.string(), position: z.number().int(), startMonth: MONTH }))
+  .input(
+    z.object({
+      kind: KIND,
+      name: z.string().min(1),
+      color: z.string(),
+      position: z.number().int(),
+      startMonth: MONTH,
+    }),
+  )
   .handler(async ({ input }) => flowsSvc.createFlow(db, input));
 const flowsUpdate = os
-  .input(z.object({ id: z.number().int(), name: z.string().min(1).optional(), color: z.string().optional(), position: z.number().int().optional() }))
+  .input(
+    z.object({
+      id: z.number().int(),
+      name: z.string().min(1).optional(),
+      color: z.string().optional(),
+      position: z.number().int().optional(),
+    }),
+  )
   .handler(async ({ input }) => {
     flowsSvc.updateFlow(db, input);
     return { ok: true };
@@ -44,13 +59,27 @@ const flowsDelete = os.input(z.object({ id: z.number().int() })).handler(async (
   return { ok: true };
 });
 const periodAdd = os
-  .input(z.object({ flowId: z.number().int(), amountMinor: MINOR, startMonth: MONTH, endMonth: MONTH.nullable().optional() }))
+  .input(
+    z.object({
+      flowId: z.number().int(),
+      amountMinor: MINOR,
+      startMonth: MONTH,
+      endMonth: MONTH.nullable().optional(),
+    }),
+  )
   .handler(async ({ input }) => {
     flowsSvc.addPeriod(db, input);
     return { ok: true };
   });
 const periodUpdate = os
-  .input(z.object({ id: z.number().int(), amountMinor: MINOR.optional(), startMonth: MONTH.optional(), endMonth: MONTH.nullable().optional() }))
+  .input(
+    z.object({
+      id: z.number().int(),
+      amountMinor: MINOR.optional(),
+      startMonth: MONTH.optional(),
+      endMonth: MONTH.nullable().optional(),
+    }),
+  )
   .handler(async ({ input }) => {
     flowsSvc.updatePeriod(db, input);
     return { ok: true };
@@ -62,10 +91,29 @@ const periodDelete = os.input(z.object({ id: z.number().int() })).handler(async 
 
 // --- taxes ---
 const taxesCreate = os
-  .input(z.object({ name: z.string().min(1), mode: MODE, rateBps: z.number().int().min(0).max(10000).nullable(), amountMinor: MINOR.nullable(), color: z.string(), position: z.number().int() }))
+  .input(
+    z.object({
+      name: z.string().min(1),
+      mode: MODE,
+      rateBps: z.number().int().min(0).max(10000).nullable(),
+      amountMinor: MINOR.nullable(),
+      color: z.string(),
+      position: z.number().int(),
+    }),
+  )
   .handler(async ({ input }) => taxesSvc.createTax(db, input));
 const taxesUpdate = os
-  .input(z.object({ id: z.number().int(), name: z.string().min(1).optional(), mode: MODE.optional(), rateBps: z.number().int().min(0).max(10000).nullable().optional(), amountMinor: MINOR.nullable().optional(), color: z.string().optional(), position: z.number().int().optional() }))
+  .input(
+    z.object({
+      id: z.number().int(),
+      name: z.string().min(1).optional(),
+      mode: MODE.optional(),
+      rateBps: z.number().int().min(0).max(10000).nullable().optional(),
+      amountMinor: MINOR.nullable().optional(),
+      color: z.string().optional(),
+      position: z.number().int().optional(),
+    }),
+  )
   .handler(async ({ input }) => {
     taxesSvc.updateTax(db, input);
     return { ok: true };
@@ -77,10 +125,25 @@ const taxesDelete = os.input(z.object({ id: z.number().int() })).handler(async (
 
 // --- events ---
 const eventsCreate = os
-  .input(z.object({ name: z.string().min(1), month: MONTH, amountMinor: MINOR, color: z.string().nullable() }))
+  .input(
+    z.object({
+      name: z.string().min(1),
+      month: MONTH,
+      amountMinor: MINOR,
+      color: z.string().nullable(),
+    }),
+  )
   .handler(async ({ input }) => eventsSvc.createEvent(db, input));
 const eventsUpdate = os
-  .input(z.object({ id: z.number().int(), name: z.string().min(1).optional(), month: MONTH.optional(), amountMinor: MINOR.optional(), color: z.string().nullable().optional() }))
+  .input(
+    z.object({
+      id: z.number().int(),
+      name: z.string().min(1).optional(),
+      month: MONTH.optional(),
+      amountMinor: MINOR.optional(),
+      color: z.string().nullable().optional(),
+    }),
+  )
   .handler(async ({ input }) => {
     eventsSvc.updateEvent(db, input);
     return { ok: true };

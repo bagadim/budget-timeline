@@ -41,7 +41,12 @@ export interface ProjectionInput {
   taxes: ProjectionTax[];
   events: ProjectionEvent[];
 }
-export interface MonthBreakdownItem { id: number; name: string; color: string | null; amount: number; }
+export interface MonthBreakdownItem {
+  id: number;
+  name: string;
+  color: string | null;
+  amount: number;
+}
 export interface ProjectionMonth {
   monthIndex: number;
   label: string;
@@ -54,5 +59,7 @@ export interface ProjectionMonth {
   cumulative: number;
   events: MonthBreakdownItem[];
 }
-export interface Projection { months: ProjectionMonth[]; }
+export interface Projection {
+  months: ProjectionMonth[];
+}
 export function computeProjection(input: ProjectionInput): Projection;

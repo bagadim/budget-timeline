@@ -1,4 +1,17 @@
-const MONTH_LABELS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONTH_LABELS = [
+  'Jan',
+  'Feb',
+  'Mar',
+  'Apr',
+  'May',
+  'Jun',
+  'Jul',
+  'Aug',
+  'Sep',
+  'Oct',
+  'Nov',
+  'Dec',
+];
 
 const pad2 = (n) => String(n).padStart(2, '0');
 const monthKey = (year, month1to12) => `${year}-${pad2(month1to12)}-01`;
@@ -48,7 +61,10 @@ export function computeProjection({ settings, flows, taxes, events }) {
       id: t.id,
       name: t.name,
       color: t.color,
-      amount: t.mode === 'percent' ? Math.round((income * (t.rateBps ?? 0)) / 10000) : (t.amountMinor ?? 0),
+      amount:
+        t.mode === 'percent'
+          ? Math.round((income * (t.rateBps ?? 0)) / 10000)
+          : (t.amountMinor ?? 0),
     }));
     const totalTax = taxBreakdown.reduce((s, t) => s + t.amount, 0);
 

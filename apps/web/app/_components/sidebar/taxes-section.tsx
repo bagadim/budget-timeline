@@ -1,7 +1,7 @@
 'use client';
 
-import type { useBudget } from '../use-budget';
 import { nextColor, TAX_PALETTE } from '@/lib/palette';
+import type { useBudget } from '../use-budget';
 import { AddLink } from './add-link';
 import { ColorSwatch } from './color-swatch';
 
@@ -14,7 +14,14 @@ export function TaxesSection({ budget }: { budget: ReturnType<typeof useBudget> 
     persist(
       (cur) => cur,
       async () => {
-        await client.taxes.create({ name: 'New tax', mode: 'percent', rateBps: 0, amountMinor: null, color, position: taxes.length });
+        await client.taxes.create({
+          name: 'New tax',
+          mode: 'percent',
+          rateBps: 0,
+          amountMinor: null,
+          color,
+          position: taxes.length,
+        });
         await reload();
       },
     );
@@ -37,8 +44,15 @@ export function TaxesSection({ budget }: { budget: ReturnType<typeof useBudget> 
       <h2 className="mb-2 font-semibold">Taxes</h2>
       <div className="space-y-1.5">
         {taxes.map((t) => (
-          <div key={t.id} className="flex items-center gap-1.5 rounded border border-zinc-200 p-1.5">
-            <ColorSwatch color={t.color} options={TAX_PALETTE} onChange={(c) => patch(t.id, { color: c })} />
+          <div
+            key={t.id}
+            className="flex items-center gap-1.5 rounded border border-zinc-200 p-1.5"
+          >
+            <ColorSwatch
+              color={t.color}
+              options={TAX_PALETTE}
+              onChange={(c) => patch(t.id, { color: c })}
+            />
             <input
               defaultValue={t.name}
               onBlur={(e) => patch(t.id, { name: e.target.value })}
@@ -47,7 +61,12 @@ export function TaxesSection({ budget }: { budget: ReturnType<typeof useBudget> 
             <select
               value={t.mode}
               onChange={(e) =>
-                patch(t.id, e.target.value === 'percent' ? { mode: 'percent', amountMinor: null, rateBps: t.rateBps ?? 0 } : { mode: 'fixed', rateBps: null, amountMinor: t.amountMinor ?? 0 })
+                patch(
+                  t.id,
+                  e.target.value === 'percent'
+                    ? { mode: 'percent', amountMinor: null, rateBps: t.rateBps ?? 0 }
+                    : { mode: 'fixed', rateBps: null, amountMinor: t.amountMinor ?? 0 },
+                )
               }
               className="rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
             >
@@ -66,11 +85,17 @@ export function TaxesSection({ budget }: { budget: ReturnType<typeof useBudget> 
               <input
                 type="number"
                 defaultValue={(t.amountMinor ?? 0) / 100}
-                onBlur={(e) => patch(t.id, { amountMinor: Math.round(Number(e.target.value) * 100) })}
+                onBlur={(e) =>
+                  patch(t.id, { amountMinor: Math.round(Number(e.target.value) * 100) })
+                }
                 className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
               />
             )}
-            <button type="button" onClick={() => remove(t.id)} className="text-zinc-400 hover:text-red-600">
+            <button
+              type="button"
+              onClick={() => remove(t.id)}
+              className="text-zinc-400 hover:text-red-600"
+            >
               ✕
             </button>
           </div>

@@ -1,14 +1,16 @@
 'use client';
 
-import type { useBudget } from '../use-budget';
 import { CURRENCIES } from '@/lib/palette';
+import type { useBudget } from '../use-budget';
 
 export function SetupSection({ budget }: { budget: ReturnType<typeof useBudget> }) {
   const { snapshot, persist, client } = budget;
   const s = snapshot.settings;
 
   // horizonYears is set via the chart toggle (its Zod type is 5|10), so it's excluded here.
-  const update = (patch: Partial<Pick<typeof s, 'startingSavingsMinor' | 'startMonth' | 'currency'>>) =>
+  const update = (
+    patch: Partial<Pick<typeof s, 'startingSavingsMinor' | 'startMonth' | 'currency'>>,
+  ) =>
     persist(
       (cur) => ({ ...cur, settings: { ...cur.settings, ...patch } }),
       () => client.settings.update(patch),
@@ -44,7 +46,9 @@ export function SetupSection({ budget }: { budget: ReturnType<typeof useBudget> 
             className="mt-0.5 block rounded border border-zinc-300 px-2 py-1 text-sm text-zinc-900"
           >
             {CURRENCIES.map((c) => (
-              <option key={c} value={c}>{c}</option>
+              <option key={c} value={c}>
+                {c}
+              </option>
             ))}
           </select>
         </label>

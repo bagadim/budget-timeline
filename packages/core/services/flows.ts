@@ -19,14 +19,22 @@ export function listFlows(db: Db): FlowWithPeriods[] {
 
 export function createFlow(
   db: Db,
-  input: { kind: 'income' | 'spending'; name: string; color: string; position: number; startMonth: string },
+  input: {
+    kind: 'income' | 'spending';
+    name: string;
+    color: string;
+    position: number;
+    startMonth: string;
+  },
 ): FlowWithPeriods {
   const flow = db
     .insert(flows)
     .values({ kind: input.kind, name: input.name, color: input.color, position: input.position })
     .returning()
     .get();
-  db.insert(flowPeriods).values({ flowId: flow.id, amountMinor: 0, startMonth: input.startMonth, endMonth: null }).run();
+  db.insert(flowPeriods)
+    .values({ flowId: flow.id, amountMinor: 0, startMonth: input.startMonth, endMonth: null })
+    .run();
   return listFlows(db).find((f) => f.id === flow.id) as FlowWithPeriods;
 }
 
@@ -54,10 +62,18 @@ export function addPeriod(
     .all()
     .filter((p) => p.endMonth == null && p.startMonth < input.startMonth);
   for (const p of open) {
-    db.update(flowPeriods).set({ endMonth: prevMonth(input.startMonth) }).where(eq(flowPeriods.id, p.id)).run();
+    db.update(flowPeriods)
+      .set({ endMonth: prevMonth(input.startMonth) })
+      .where(eq(flowPeriods.id, p.id))
+      .run();
   }
   db.insert(flowPeriods)
-    .values({ flowId: input.flowId, amountMinor: input.amountMinor, startMonth: input.startMonth, endMonth: input.endMonth ?? null })
+    .values({
+      flowId: input.flowId,
+      amountMinor: input.amountMinor,
+      startMonth: input.startMonth,
+      endMonth: input.endMonth ?? null,
+    })
     .run();
 }
 

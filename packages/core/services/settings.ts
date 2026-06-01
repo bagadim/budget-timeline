@@ -11,14 +11,22 @@ export function getSettings(db: Db): Settings {
   if (existing) return existing;
   return db
     .insert(settings)
-    .values({ id: 1, startingSavingsMinor: 0, startMonth: defaultStartMonth(), currency: 'PLN', horizonYears: 5 })
+    .values({
+      id: 1,
+      startingSavingsMinor: 0,
+      startMonth: defaultStartMonth(),
+      currency: 'PLN',
+      horizonYears: 5,
+    })
     .returning()
     .get();
 }
 
 export function updateSettings(
   db: Db,
-  patch: Partial<Pick<Settings, 'startingSavingsMinor' | 'startMonth' | 'currency' | 'horizonYears'>>,
+  patch: Partial<
+    Pick<Settings, 'startingSavingsMinor' | 'startMonth' | 'currency' | 'horizonYears'>
+  >,
 ): Settings {
   getSettings(db); // ensure the row exists
   return db.update(settings).set(patch).where(eq(settings.id, 1)).returning().get();

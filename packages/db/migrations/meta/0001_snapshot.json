@@ -104,12 +104,8 @@
           "name": "flow_periods_flow_id_flows_id_fk",
           "tableFrom": "flow_periods",
           "tableTo": "flows",
-          "columnsFrom": [
-            "flow_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["flow_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

@@ -1,19 +1,37 @@
 import type { ProjectionMonth } from '@budget-timeline/shared/projection';
 import { SAVINGS_GREEN } from '@/lib/palette';
-import { COL, GAP, YearBoundaries, chartWidth, colX } from './chart-grid';
+import { COL, chartWidth, colX, GAP, YearBoundaries } from './chart-grid';
 
 const HEIGHT = 220;
 const TOP = 16;
 
-export function IncomeBarsPanel({ months, maxIncome }: { months: ProjectionMonth[]; maxIncome: number }) {
+export function IncomeBarsPanel({
+  months,
+  maxIncome,
+}: {
+  months: ProjectionMonth[];
+  maxIncome: number;
+}) {
   const plotH = HEIGHT - TOP - 18;
   const scale = (v: number) => (maxIncome > 0 ? (v / maxIncome) * plotH : 0);
   const bw = COL - GAP;
 
   return (
-    <svg width={chartWidth(months.length)} height={HEIGHT} className="block">
+    <svg
+      width={chartWidth(months.length)}
+      height={HEIGHT}
+      className="block"
+      aria-label="Income breakdown chart"
+      role="img"
+    >
       <YearBoundaries months={months} height={HEIGHT} />
-      <line x1={0} y1={TOP + plotH} x2={chartWidth(months.length)} y2={TOP + plotH} stroke="#94a3b8" />
+      <line
+        x1={0}
+        y1={TOP + plotH}
+        x2={chartWidth(months.length)}
+        y2={TOP + plotH}
+        stroke="#94a3b8"
+      />
       {months.map((m, i) => {
         const x = colX(i);
         let acc = 0;
@@ -25,7 +43,16 @@ export function IncomeBarsPanel({ months, maxIncome }: { months: ProjectionMonth
           const h = scale(s.amount);
           const y = TOP + plotH - acc - h;
           acc += h;
-          return <rect key={`${m.monthIndex}-${s.kind}-${s.id}`} x={x} y={y} width={bw} height={Math.max(0, h)} fill={s.color ?? '#999'} />;
+          return (
+            <rect
+              key={`${m.monthIndex}-${s.kind}-${s.id}`}
+              x={x}
+              y={y}
+              width={bw}
+              height={Math.max(0, h)}
+              fill={s.color ?? '#999'}
+            />
+          );
         });
         const leftoverH = m.leftover > 0 ? scale(m.leftover) : 0;
         const leftoverY = TOP + plotH - acc - leftoverH;
@@ -33,13 +60,28 @@ export function IncomeBarsPanel({ months, maxIncome }: { months: ProjectionMonth
         return (
           <g key={m.monthIndex}>
             {rects}
-            {leftoverH > 0 && <rect x={x} y={leftoverY} width={bw} height={leftoverH} fill={SAVINGS_GREEN} rx={1} />}
+            {leftoverH > 0 && (
+              <rect x={x} y={leftoverY} width={bw} height={leftoverH} fill={SAVINGS_GREEN} rx={1} />
+            )}
             {m.isYearStart && m.income > 0 && (
-              <text x={x + bw / 2} y={leftoverY - 3} fontSize={9} fontWeight={700} fill={SAVINGS_GREEN} textAnchor="middle">
+              <text
+                x={x + bw / 2}
+                y={leftoverY - 3}
+                fontSize={9}
+                fontWeight={700}
+                fill={SAVINGS_GREEN}
+                textAnchor="middle"
+              >
                 {pct}%
               </text>
             )}
-            <text x={x + bw / 2} y={TOP + plotH + 13} fontSize={9} fill="#64748b" textAnchor="middle">
+            <text
+              x={x + bw / 2}
+              y={TOP + plotH + 13}
+              fontSize={9}
+              fill="#64748b"
+              textAnchor="middle"
+            >
               {m.label}
             </text>
           </g>

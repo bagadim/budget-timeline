@@ -13,7 +13,11 @@ describe('settings service', () => {
   it('updates and persists fields', () => {
     const db = makeTestDb();
     getSettings(db); // seed
-    const updated = updateSettings(db, { currency: 'EUR', horizonYears: 10, startingSavingsMinor: 999 });
+    const updated = updateSettings(db, {
+      currency: 'EUR',
+      horizonYears: 10,
+      startingSavingsMinor: 999,
+    });
     expect(updated).toMatchObject({ currency: 'EUR', horizonYears: 10, startingSavingsMinor: 999 });
     expect(getSettings(db).currency).toBe('EUR');
   });

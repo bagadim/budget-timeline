@@ -4,15 +4,26 @@ import type { FlowWithPeriods } from '@budget-timeline/core/types';
 import type { useBudget } from '../use-budget';
 import { AddLink } from './add-link';
 
-export function PeriodRows({ flow, budget }: { flow: FlowWithPeriods; budget: ReturnType<typeof useBudget> }) {
+export function PeriodRows({
+  flow,
+  budget,
+}: {
+  flow: FlowWithPeriods;
+  budget: ReturnType<typeof useBudget>;
+}) {
   const { snapshot, persist, client } = budget;
 
-  const patchPeriod = (id: number, patch: { amountMinor?: number; startMonth?: string; endMonth?: string | null }) =>
+  const patchPeriod = (
+    id: number,
+    patch: { amountMinor?: number; startMonth?: string; endMonth?: string | null },
+  ) =>
     persist(
       (cur) => ({
         ...cur,
         flows: cur.flows.map((f) =>
-          f.id === flow.id ? { ...f, periods: f.periods.map((p) => (p.id === id ? { ...p, ...patch } : p)) } : f,
+          f.id === flow.id
+            ? { ...f, periods: f.periods.map((p) => (p.id === id ? { ...p, ...patch } : p)) }
+            : f,
         ),
       }),
       () => client.flows.periods.update({ id, ...patch }),
@@ -33,7 +44,9 @@ export function PeriodRows({ flow, budget }: { flow: FlowWithPeriods; budget: Re
     persist(
       (cur) => ({
         ...cur,
-        flows: cur.flows.map((f) => (f.id === flow.id ? { ...f, periods: f.periods.filter((p) => p.id !== id) } : f)),
+        flows: cur.flows.map((f) =>
+          f.id === flow.id ? { ...f, periods: f.periods.filter((p) => p.id !== id) } : f,
+        ),
       }),
       () => client.flows.periods.delete({ id }),
     );
@@ -45,24 +58,34 @@ export function PeriodRows({ flow, budget }: { flow: FlowWithPeriods; budget: Re
           <input
             type="number"
             defaultValue={p.amountMinor / 100}
-            onBlur={(e) => patchPeriod(p.id, { amountMinor: Math.round(Number(e.target.value) * 100) })}
+            onBlur={(e) =>
+              patchPeriod(p.id, { amountMinor: Math.round(Number(e.target.value) * 100) })
+            }
             className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
           />
           <input
             type="month"
             defaultValue={p.startMonth.slice(0, 7)}
-            onBlur={(e) => e.target.value && patchPeriod(p.id, { startMonth: `${e.target.value}-01` })}
+            onBlur={(e) =>
+              e.target.value && patchPeriod(p.id, { startMonth: `${e.target.value}-01` })
+            }
             className="rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
           />
           <span className="text-zinc-400">→</span>
           <input
             type="month"
             defaultValue={p.endMonth ? p.endMonth.slice(0, 7) : ''}
-            onBlur={(e) => patchPeriod(p.id, { endMonth: e.target.value ? `${e.target.value}-01` : null })}
+            onBlur={(e) =>
+              patchPeriod(p.id, { endMonth: e.target.value ? `${e.target.value}-01` : null })
+            }
             className="rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
           />
           {flow.periods.length > 1 && (
-            <button type="button" onClick={() => removePeriod(p.id)} className="text-zinc-400 hover:text-red-600">
+            <button
+              type="button"
+              onClick={() => removePeriod(p.id)}
+              className="text-zinc-400 hover:text-red-600"
+            >
               ✕
             </button>
           )}

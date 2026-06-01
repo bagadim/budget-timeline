@@ -7,14 +7,29 @@ export function listTaxes(db: Db): Tax[] {
 
 export function createTax(
   db: Db,
-  input: { name: string; mode: 'percent' | 'fixed'; rateBps: number | null; amountMinor: number | null; color: string; position: number },
+  input: {
+    name: string;
+    mode: 'percent' | 'fixed';
+    rateBps: number | null;
+    amountMinor: number | null;
+    color: string;
+    position: number;
+  },
 ): Tax {
   return db.insert(taxes).values(input).returning().get();
 }
 
 export function updateTax(
   db: Db,
-  patch: { id: number; name?: string; mode?: 'percent' | 'fixed'; rateBps?: number | null; amountMinor?: number | null; color?: string; position?: number },
+  patch: {
+    id: number;
+    name?: string;
+    mode?: 'percent' | 'fixed';
+    rateBps?: number | null;
+    amountMinor?: number | null;
+    color?: string;
+    position?: number;
+  },
 ): void {
   const { id, ...rest } = patch;
   db.update(taxes).set(rest).where(eq(taxes.id, id)).run();

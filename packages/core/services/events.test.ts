@@ -5,7 +5,12 @@ import { createEvent, deleteEvent, listEvents, updateEvent } from './events';
 describe('events service', () => {
   it('creates, lists, updates, and deletes events', () => {
     const db = makeTestDb();
-    const ev = createEvent(db, { name: 'Japan', month: '2026-10-01', amountMinor: 1_200_000, color: null });
+    const ev = createEvent(db, {
+      name: 'Japan',
+      month: '2026-10-01',
+      amountMinor: 1_200_000,
+      color: null,
+    });
     expect(ev).toMatchObject({ name: 'Japan', month: '2026-10-01', amountMinor: 1_200_000 });
 
     expect(listEvents(db)).toHaveLength(1);
