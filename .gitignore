@@ -19,3 +19,6 @@ data/
 # misc
 .DS_Store
 *.log
+
+# brainstorming visual companion
+.superpowers/
