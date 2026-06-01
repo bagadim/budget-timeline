@@ -74,7 +74,13 @@ describe('flows service', () => {
 
   it('deletes a flow and cascades its periods', () => {
     const db = makeTestDb();
-    const flow = createFlow(db, { kind: 'income', name: 'X', color: '#000', position: 0, startMonth: '2026-01-01' });
+    const flow = createFlow(db, {
+      kind: 'income',
+      name: 'X',
+      color: '#000',
+      position: 0,
+      startMonth: '2026-01-01',
+    });
     deleteFlow(db, flow.id);
     expect(listFlows(db)).toHaveLength(0);
     expect(db.select().from(flowPeriods).all()).toHaveLength(0); // cascade actually removed the period rows
