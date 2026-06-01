@@ -4,7 +4,8 @@
   "private": true,
   "type": "module",
   "exports": {
-    "./money": "./money.js"
+    "./money": "./money.js",
+    "./projection": { "types": "./projection.d.ts", "default": "./projection.js" }
   },
   "scripts": {
     "test": "vitest run"
