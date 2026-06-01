@@ -4,12 +4,19 @@
   "private": true,
   "type": "module",
   "exports": {
-    ".": "./router.ts"
+    ".": "./router.ts",
+    "./types": "./types.ts"
+  },
+  "scripts": {
+    "test": "vitest run"
   },
   "dependencies": {
     "@budget-timeline/db": "workspace:*",
     "@orpc/server": "latest",
     "drizzle-orm": "^0.36.0",
     "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
   }
 }
