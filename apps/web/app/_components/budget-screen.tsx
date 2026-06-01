@@ -73,7 +73,7 @@ export function BudgetScreen({ initial }: { initial: Snapshot }) {
             ))}
           </div>
         </div>
-        <TimelineChart projection={budget.projection} />
+        <TimelineChart projection={budget.projection} currency={snapshot.settings.currency} />
       </main>
     </div>
   );

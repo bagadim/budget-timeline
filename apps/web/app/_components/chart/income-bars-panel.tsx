@@ -1,3 +1,4 @@
+import { displayMoney } from '@budget-timeline/shared/money';
 import type { ProjectionMonth } from '@budget-timeline/shared/projection';
 import { SAVINGS_GREEN } from '@/lib/palette';
 import { COL, chartWidth, colX, GAP, YearBoundaries } from './chart-grid';
@@ -8,9 +9,11 @@ const TOP = 16;
 export function IncomeBarsPanel({
   months,
   maxIncome,
+  currency,
 }: {
   months: ProjectionMonth[];
   maxIncome: number;
+  currency: string;
 }) {
   const plotH = HEIGHT - TOP - 18;
   const scale = (v: number) => (maxIncome > 0 ? (v / maxIncome) * plotH : 0);
@@ -21,10 +24,13 @@ export function IncomeBarsPanel({
       width={chartWidth(months.length)}
       height={HEIGHT}
       className="block"
-      aria-label="Income breakdown chart"
       role="img"
+      aria-label="Income breakdown chart"
     >
       <YearBoundaries months={months} height={HEIGHT} />
+      <text x={2} y={9} fontSize={8} fill="#94a3b8">
+        {displayMoney(maxIncome, currency)}
+      </text>
       <line
         x1={0}
         y1={TOP + plotH}
@@ -41,13 +47,13 @@ export function IncomeBarsPanel({
         ];
         const rects = segs.map((s) => {
           const h = scale(s.amount);
-          const y = TOP + plotH - acc - h;
+          const yy = TOP + plotH - acc - h;
           acc += h;
           return (
             <rect
               key={`${m.monthIndex}-${s.kind}-${s.id}`}
               x={x}
-              y={y}
+              y={yy}
               width={bw}
               height={Math.max(0, h)}
               fill={s.color ?? '#999'}
