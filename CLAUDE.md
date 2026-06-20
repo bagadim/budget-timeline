@@ -22,7 +22,7 @@ Personal budget tracker with a timeline view and planned milestones (trips, even
 ## Dev commands
 
 ```bash
-nvm use                  # Node 22
+nvm use                  # Node 24
 pnpm install
 pnpm db:generate         # produce migration SQL from schema diff
 pnpm db:migrate          # apply migrations to data/budget.db
