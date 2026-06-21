@@ -2,6 +2,7 @@
 
 import { displayMoney } from '@budget-timeline/shared/money';
 import type { Projection } from '@budget-timeline/shared/projection';
+import { useState } from 'react';
 import { IncomeBarsPanel } from './income-bars-panel';
 import { SavingsPanel } from './savings-panel';
 
@@ -16,6 +17,7 @@ export function TimelineChart({
   const maxIncome = Math.max(1, ...months.map((m) => m.income));
   const endSavings = months.at(-1)?.cumulative ?? 0;
   const years = Math.round(months.length / 12);
+  const [hover, setHover] = useState<number | null>(null);
 
   return (
     <div className="rounded-lg border border-zinc-200 bg-white">
@@ -33,11 +35,17 @@ export function TimelineChart({
       <div className="overflow-x-auto">
         <div className="inline-block min-w-full">
           <div className="px-2 pt-1 text-xs font-medium text-zinc-500">Income &amp; spending</div>
-          <IncomeBarsPanel months={months} maxIncome={maxIncome} currency={currency} />
+          <IncomeBarsPanel
+            months={months}
+            maxIncome={maxIncome}
+            currency={currency}
+            hover={hover}
+            onHover={setHover}
+          />
           <div className="border-y border-zinc-100 px-2 pt-1 text-xs font-medium text-zinc-500">
             Cumulative savings
           </div>
-          <SavingsPanel months={months} currency={currency} />
+          <SavingsPanel months={months} currency={currency} hover={hover} onHover={setHover} />
         </div>
       </div>
     </div>

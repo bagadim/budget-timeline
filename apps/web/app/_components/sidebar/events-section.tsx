@@ -42,40 +42,42 @@ export function EventsSection({ budget }: { budget: ReturnType<typeof useBudget>
       <h2 className="mb-2 font-semibold">Events</h2>
       <div className="space-y-1.5">
         {events.map((e) => (
-          <div
-            key={e.id}
-            className="flex items-center gap-1.5 rounded border border-zinc-200 p-1.5"
-          >
-            <ColorSwatch
-              color={e.color ?? PALETTE[0]}
-              onChange={(c) => patch(e.id, { color: c })}
-            />
-            <input
-              defaultValue={e.name}
-              onBlur={(ev) => patch(e.id, { name: ev.target.value })}
-              className="min-w-0 flex-1 rounded border border-transparent px-1 py-0.5 text-sm text-zinc-900 hover:border-zinc-200"
-            />
-            <input
-              type="month"
-              defaultValue={e.month.slice(0, 7)}
-              onBlur={(ev) => ev.target.value && patch(e.id, { month: `${ev.target.value}-01` })}
-              className="rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
-            />
-            <input
-              type="number"
-              defaultValue={e.amountMinor / 100}
-              onBlur={(ev) =>
-                patch(e.id, { amountMinor: Math.round(Number(ev.target.value) * 100) })
-              }
-              className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
-            />
-            <button
-              type="button"
-              onClick={() => remove(e.id)}
-              className="text-zinc-400 hover:text-red-600"
-            >
-              ✕
-            </button>
+          <div key={e.id} className="space-y-1 rounded border border-zinc-200 p-1.5">
+            <div className="flex items-center gap-1.5">
+              <ColorSwatch
+                color={e.color ?? PALETTE[0]}
+                onChange={(c) => patch(e.id, { color: c })}
+              />
+              <input
+                defaultValue={e.name}
+                onBlur={(ev) => patch(e.id, { name: ev.target.value })}
+                className="min-w-0 flex-1 rounded border border-transparent px-1 py-0.5 text-sm text-zinc-900 hover:border-zinc-200"
+              />
+              <button
+                type="button"
+                onClick={() => remove(e.id)}
+                aria-label="Remove event"
+                className="shrink-0 px-1 text-zinc-400 hover:text-red-600"
+              >
+                ✕
+              </button>
+            </div>
+            <div className="flex items-center gap-1.5">
+              <input
+                type="month"
+                defaultValue={e.month.slice(0, 7)}
+                onBlur={(ev) => ev.target.value && patch(e.id, { month: `${ev.target.value}-01` })}
+                className="min-w-0 flex-1 rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
+              />
+              <input
+                type="number"
+                defaultValue={e.amountMinor / 100}
+                onBlur={(ev) =>
+                  patch(e.id, { amountMinor: Math.round(Number(ev.target.value) * 100) })
+                }
+                className="w-20 shrink-0 rounded border border-zinc-300 px-1 py-0.5 text-xs text-zinc-900"
+              />
+            </div>
           </div>
         ))}
       </div>

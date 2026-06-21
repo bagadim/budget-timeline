@@ -1,43 +1,64 @@
 import { displayMoney } from '@budget-timeline/shared/money';
 import type { ProjectionMonth } from '@budget-timeline/shared/projection';
 import { SAVINGS_GREEN } from '@/lib/palette';
-import { COL, chartWidth, colX, GAP, YearBoundaries } from './chart-grid';
+import {
+  COL,
+  chartWidth,
+  colX,
+  GAP,
+  HoverLine,
+  indexFromX,
+  YEAR_BAND,
+  YearBoundaries,
+} from './chart-grid';
 
 const HEIGHT = 220;
-const TOP = 16;
+const TOP = YEAR_BAND + 6;
 
 export function IncomeBarsPanel({
   months,
   maxIncome,
   currency,
+  hover,
+  onHover,
 }: {
   months: ProjectionMonth[];
   maxIncome: number;
   currency: string;
+  hover: number | null;
+  onHover: (i: number | null) => void;
 }) {
   const plotH = HEIGHT - TOP - 18;
   const scale = (v: number) => (maxIncome > 0 ? (v / maxIncome) * plotH : 0);
   const bw = COL - GAP;
+  const width = chartWidth(months.length);
 
   return (
     <svg
-      width={chartWidth(months.length)}
+      width={width}
       height={HEIGHT}
       className="block"
       role="img"
       aria-label="Income breakdown chart"
+      onPointerMove={(e) => {
+        const left = e.currentTarget.getBoundingClientRect().left;
+        onHover(indexFromX(e.clientX - left, months.length));
+      }}
+      onPointerLeave={() => onHover(null)}
     >
       <YearBoundaries months={months} height={HEIGHT} />
-      <text x={2} y={9} fontSize={8} fill="#94a3b8">
+      <text
+        x={2}
+        y={TOP - 3}
+        fontSize={8}
+        fill="#94a3b8"
+        paintOrder="stroke"
+        stroke="#fff"
+        strokeWidth={2.5}
+      >
         {displayMoney(maxIncome, currency)}
       </text>
-      <line
-        x1={0}
-        y1={TOP + plotH}
-        x2={chartWidth(months.length)}
-        y2={TOP + plotH}
-        stroke="#94a3b8"
-      />
+      <line x1={0} y1={TOP + plotH} x2={width} y2={TOP + plotH} stroke="#94a3b8" />
       {months.map((m, i) => {
         const x = colX(i);
         let acc = 0;
@@ -69,13 +90,13 @@ export function IncomeBarsPanel({
             {leftoverH > 0 && (
               <rect x={x} y={leftoverY} width={bw} height={leftoverH} fill={SAVINGS_GREEN} rx={1} />
             )}
-            {m.isYearStart && m.income > 0 && (
+            {m.isYearStart && m.income > 0 && leftoverH > 16 && (
               <text
                 x={x + bw / 2}
-                y={leftoverY - 3}
+                y={leftoverY + 12}
                 fontSize={9}
                 fontWeight={700}
-                fill={SAVINGS_GREEN}
+                fill="#fff"
                 textAnchor="middle"
               >
                 {pct}%
@@ -93,6 +114,7 @@ export function IncomeBarsPanel({
           </g>
         );
       })}
+      <HoverLine index={hover} height={HEIGHT} />
     </svg>
   );
 }

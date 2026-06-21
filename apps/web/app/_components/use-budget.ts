@@ -20,8 +20,15 @@ export function useBudget(initial: Snapshot) {
       setSnapshot((s) => mutate(s));
       try {
         await call();
-      } catch {
-        await reload();
+      } catch (err) {
+        // Surface the failure — a silently swallowed RPC error here is exactly what
+        // let broken budget mutations (e.g. a bad RPC URL) go unnoticed.
+        console.error('[budget] persist failed; reloading from server', err);
+        try {
+          await reload();
+        } catch (reloadErr) {
+          console.error('[budget] reload after failed persist also failed', reloadErr);
+        }
       }
     },
     [reload],

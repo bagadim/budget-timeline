@@ -52,43 +52,51 @@ export function PeriodRows({
     );
 
   return (
-    <div className="mt-1.5 space-y-1.5 border-l-2 border-zinc-100 pl-2">
+    <div className="mt-1.5 space-y-2 border-l-2 border-zinc-100 pl-2">
       {flow.periods.map((p) => (
-        <div key={p.id} className="flex items-center gap-1.5 text-xs">
-          <input
-            type="number"
-            defaultValue={p.amountMinor / 100}
-            onBlur={(e) =>
-              patchPeriod(p.id, { amountMinor: Math.round(Number(e.target.value) * 100) })
-            }
-            className="w-16 rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
-          />
-          <input
-            type="month"
-            defaultValue={p.startMonth.slice(0, 7)}
-            onBlur={(e) =>
-              e.target.value && patchPeriod(p.id, { startMonth: `${e.target.value}-01` })
-            }
-            className="rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
-          />
-          <span className="text-zinc-400">→</span>
-          <input
-            type="month"
-            defaultValue={p.endMonth ? p.endMonth.slice(0, 7) : ''}
-            onBlur={(e) =>
-              patchPeriod(p.id, { endMonth: e.target.value ? `${e.target.value}-01` : null })
-            }
-            className="rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
-          />
-          {flow.periods.length > 1 && (
-            <button
-              type="button"
-              onClick={() => removePeriod(p.id)}
-              className="text-zinc-400 hover:text-red-600"
-            >
-              ✕
-            </button>
-          )}
+        <div key={p.id} className="space-y-1 text-xs">
+          <div className="flex items-center gap-1.5">
+            <input
+              type="number"
+              defaultValue={p.amountMinor / 100}
+              onBlur={(e) =>
+                patchPeriod(p.id, { amountMinor: Math.round(Number(e.target.value) * 100) })
+              }
+              className="min-w-0 flex-1 rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
+            />
+            {flow.periods.length > 1 && (
+              <button
+                type="button"
+                onClick={() => removePeriod(p.id)}
+                aria-label="Remove period"
+                className="shrink-0 px-1 text-zinc-400 hover:text-red-600"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+          <label className="flex items-center gap-1.5 text-zinc-400">
+            <span className="w-7 shrink-0 text-[10px] uppercase tracking-wide">from</span>
+            <input
+              type="month"
+              defaultValue={p.startMonth.slice(0, 7)}
+              onBlur={(e) =>
+                e.target.value && patchPeriod(p.id, { startMonth: `${e.target.value}-01` })
+              }
+              className="min-w-0 flex-1 rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
+            />
+          </label>
+          <label className="flex items-center gap-1.5 text-zinc-400">
+            <span className="w-7 shrink-0 text-[10px] uppercase tracking-wide">to</span>
+            <input
+              type="month"
+              defaultValue={p.endMonth ? p.endMonth.slice(0, 7) : ''}
+              onBlur={(e) =>
+                patchPeriod(p.id, { endMonth: e.target.value ? `${e.target.value}-01` : null })
+              }
+              className="min-w-0 flex-1 rounded border border-zinc-300 px-1 py-0.5 text-zinc-900"
+            />
+          </label>
         </div>
       ))}
       <AddLink label="add period" onClick={addPeriod} />
